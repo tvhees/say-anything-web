@@ -28,3 +28,24 @@ io.on('connection', function(socket) {
 setInterval(function() {
   io.sockets.emit('message', 'hi!');
 }, 1000);
+
+// Handle new players joining
+var players = {};
+io.on('connection', function(socket) {
+  socket.on('new player', function() {
+    players[socket.id] = {
+      name: 'player' + socket.id,
+      answer: null
+    };
+  });
+  socket.on('submit answer', function(data) {
+    var player = players[socket.id] || {};
+    if (data) {
+      player.answer = data;
+    }
+  });
+});
+
+setInterval(function() {
+  io.sockets.emit('state', players);
+}, 1000/60);
