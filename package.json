@@ -1,0 +1,23 @@
+{
+  "name": "say-anything",
+  "version": "1.0.0",
+  "description": "Online implementation of Say Anything",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tvhees/say-anything-web.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tvhees/say-anything-web/issues"
+  },
+  "homepage": "https://github.com/tvhees/say-anything-web#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^2.3.0"
+  }
+}
