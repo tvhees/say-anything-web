@@ -25,20 +25,30 @@ server.listen(5000, function() {
 io.on('connection', function(socket) {
 });
 
-setInterval(function() {
-  io.sockets.emit('message', 'hi!');
-}, 1000);
-
-// Handle new players joining
 var players = {};
 io.on('connection', function(socket) {
+  // Handle new players joining
   socket.on('new player', function() {
     players[socket.id] = {
       name: 'player' + socket.id,
+      connected: true,
       answer: null
     };
   });
-  socket.on('submit answer', function(data) {
+
+  //Handle players disconnecting
+  socket.on('disconnect', function() {
+    players[socket.id].connected = false; 
+  });
+
+  socket.on('name', function(data) {
+    var player = players[socket.id] || {};
+    if (data) {
+      player.name = data;
+    }
+  });
+
+  socket.on('answer', function(data) {
     var player = players[socket.id] || {};
     if (data) {
       player.answer = data;
