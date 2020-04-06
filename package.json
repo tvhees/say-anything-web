@@ -4,6 +4,7 @@
   "description": "Online implementation of Say Anything",
   "main": "index.js",
   "scripts": {
+    "start": "echo \"NPM start run\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
