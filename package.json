@@ -17,6 +17,9 @@
     "url": "https://github.com/tvhees/say-anything-web/issues"
   },
   "homepage": "https://github.com/tvhees/say-anything-web#readme",
+  "engines": {
+    "node":"10.x"
+  },
   "dependencies": {
     "express": "^4.17.1",
     "socket.io": "^2.3.0"
