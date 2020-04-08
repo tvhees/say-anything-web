@@ -1,0 +1,104 @@
+{
+  "id": "root",
+  "states": {
+    "Lobby": {
+      "id": "Lobby",
+      "states": {
+        "Not Ready": {
+          "id": "Not Ready",
+          "states": {},
+          "on": {
+            "player enter name": "#Number of players?",
+            "player join": "#Not Ready"
+          }
+        },
+        "Number of players?": {
+          "id": "Number of players?",
+          "states": {},
+          "on": {
+            "4 or more?": "#Ready",
+            "under 4?": "#Not Ready"
+          }
+        },
+        "Ready": {
+          "id": "Ready",
+          "states": {},
+          "on": {
+            "host start": "#Game",
+            "player leave": "#Number of players?"
+          }
+        }
+      },
+      "initial": "Number of players?",
+      "on": {}
+    },
+    "Game": {
+      "id": "Game",
+      "states": {
+        "Pick Question": {
+          "id": "Pick Question",
+          "states": {},
+          "on": {
+            "pick": "#Write Answer"
+          }
+        },
+        "Write Answer": {
+          "id": "Write Answer",
+          "states": {},
+          "on": {
+            "write": "#All Players Answered?"
+          }
+        },
+        "All Players Answered?": {
+          "id": "All Players Answered?",
+          "states": {},
+          "on": {
+            "no?": "#Write Answer",
+            "yes?": "#Pick Answer"
+          }
+        },
+        "Pick Answer": {
+          "id": "Pick Answer",
+          "states": {},
+          "on": {
+            "pick": "#Vote"
+          }
+        },
+        "Vote": {
+          "id": "Vote",
+          "states": {},
+          "on": {
+            "vote": "#All Players Voted?"
+          }
+        },
+        "All Players Voted?": {
+          "id": "All Players Voted?",
+          "states": {},
+          "on": {
+            "no?": "#Vote",
+            "yes?": "#Score"
+          }
+        },
+        "Score": {
+          "id": "Score",
+          "states": {},
+          "on": {
+            "End Round": "#Round Number?"
+          }
+        },
+        "Round Number?": {
+          "id": "Round Number?",
+          "states": {},
+          "on": {
+            "12 or more?": "#Lobby",
+            "under 12?": "#Pick Question"
+          }
+        }
+      },
+      "initial": "Pick Question",
+      "on": {}
+    }
+  },
+  "initial": "Lobby",
+  "on": {}
+}

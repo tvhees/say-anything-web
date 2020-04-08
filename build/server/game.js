@@ -1,9 +1,15 @@
-export default function Game () {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = Game;
+
+function Game() {
   this.players = {};
   this.hostId = null;
   this.isStarted = false;
-  this.judgeId = null,
-  this.question = [];
+  this.judgeId = null, this.question = [];
   this.answers = [];
 
   this.addPlayer = function (id) {
@@ -12,7 +18,7 @@ export default function Game () {
     }
 
     this.players[id] = {};
-  }
+  };
 
   this.removePlayer = function (id) {
     if (this.players[id]) {
@@ -38,5 +44,7 @@ export default function Game () {
     }
 
     return null;
-  };    
-};
+  };
+}
+
+;

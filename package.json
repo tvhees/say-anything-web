@@ -2,9 +2,12 @@
   "name": "say-anything",
   "version": "1.0.0",
   "description": "Online implementation of Say Anything",
-  "main": "index.js",
+  "main": "./build/main",
   "scripts": {
-    "start": "node index.js",
+    "start": "node ./build/main",
+    "clean": "rimraf build",
+    "transpile": "babel src -d build",
+    "build": "npm run clean && npm run transpile",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,10 +21,16 @@
   },
   "homepage": "https://github.com/tvhees/say-anything-web#readme",
   "engines": {
-    "node":"10.x"
+    "node": "10.x"
   },
   "dependencies": {
     "express": "^4.17.1",
+    "rimraf": "^3.0.2",
     "socket.io": "^2.3.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.5"
   }
 }

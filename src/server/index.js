@@ -1,8 +1,6 @@
-var messages = require('../common/messages.js');
-var Game = require('./game.js');
-var lobby = require('./lobby.js');
-
-
+import messages from '../common/messages.js';
+import Game from './game.js';
+import lobby from './lobby.js';
 
 function initialise (io) {
   var game = new Game();
@@ -28,6 +26,6 @@ function initialise (io) {
   }, 1000/60);
 }
 
-module.exports = {
-  initialise: initialise
+export default {
+  initialise
 };

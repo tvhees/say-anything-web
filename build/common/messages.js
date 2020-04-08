@@ -1,4 +1,10 @@
-export default {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+var _default = {
   io: {
     message: 'message',
     connection: 'connection',
@@ -11,3 +17,4 @@ export default {
     setAnswer: 'set answer'
   }
 };
+exports["default"] = _default;

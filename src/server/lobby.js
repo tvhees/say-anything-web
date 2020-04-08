@@ -13,4 +13,4 @@ var preGame = {
   }
 };
 
-module.exports = [preGame];
+export default [preGame];
