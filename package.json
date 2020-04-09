@@ -4,10 +4,13 @@
   "description": "Online implementation of Say Anything",
   "main": "./build/main",
   "scripts": {
-    "start": "node ./build/main",
+    "start": "node run prod",
+    "server": "node ./build/main",
     "clean": "rimraf build",
     "transpile": "babel src -d build",
-    "build": "npm run clean && npm run transpile",
+    "build": "npm-run-all clean transpile",
+    "dev": "NODE_ENV=development npm-run-all build server",
+    "prod": "NODE_ENV=production npm-run-all build server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -25,6 +28,8 @@
   },
   "dependencies": {
     "express": "^4.17.1",
+    "nodemon": "^2.0.3",
+    "npm-run-all": "^4.1.5",
     "rimraf": "^3.0.2",
     "socket.io": "^2.3.0",
     "xstate": "^4.8.0"
@@ -33,5 +38,8 @@
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.9.0",
     "@babel/preset-env": "^7.9.5"
+  },
+  "optionalDependencies": {
+    "win-node-env": "^0.4.0"
   }
 }
