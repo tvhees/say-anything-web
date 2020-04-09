@@ -7,28 +7,29 @@ exports["default"] = void 0;
 
 var _messages = _interopRequireDefault(require("../common/messages.js"));
 
-var _game = _interopRequireDefault(require("./game.js"));
-
-var _lobby = _interopRequireDefault(require("./lobby.js"));
+var _statechart = _interopRequireDefault(require("./statechart.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function initialise(io) {
-  var game = new _game["default"]();
-  var state = _lobby["default"][0];
+  var state = {};
+
+  _statechart["default"].start().onChange(function (context) {
+    state = context;
+  });
+
   io.on(_messages["default"].io.connection, function (socket) {
-    socket.on(_messages["default"].player.join, function () {
-      state.onPlayerJoin(socket, game);
-    });
-    socket.on(_messages["default"].player.leave, function () {
-      state.onPlayerLeave(socket, game);
-    });
+    socket.on(_messages["default"].player.join, function () {});
+    socket.on(_messages["default"].player.leave, function () {});
     socket.on(_messages["default"].player.setName, function (data) {
-      state.onPlayerSetName(socket, game, data);
+      _statechart["default"].send('PLAYER_NAME', {
+        id: socket.id,
+        name: data
+      });
     });
   });
   setInterval(function () {
-    io.sockets.emit(_messages["default"].io.state, game);
+    io.sockets.emit(_messages["default"].io.state, state);
   }, 1000 / 60);
 }
 

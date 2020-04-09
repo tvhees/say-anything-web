@@ -1,28 +1,27 @@
 import messages from '../common/messages.js';
-import Game from './game.js';
-import lobby from './lobby.js';
+import game from './statechart.js'
 
 function initialise (io) {
-  var game = new Game();
+  var state = {};
 
-  var state = lobby[0];
+  game.start().onChange(context => { state = context; });
   
   io.on(messages.io.connection, function(socket) {
     socket.on(messages.player.join, function() {
-      state.onPlayerJoin(socket, game);
+      
     });
 
     socket.on(messages.player.leave, function() {
-      state.onPlayerLeave(socket, game);
+      
     });
 
     socket.on(messages.player.setName, function(data) {
-      state.onPlayerSetName(socket, game, data)
+      game.send('PLAYER_NAME', { id: socket.id, name: data });
     });
   });
 
   setInterval(function() {
-    io.sockets.emit(messages.io.state, game);
+    io.sockets.emit(messages.io.state, state);
   }, 1000/60);
 }
 
