@@ -3,12 +3,18 @@
   "version": "1.0.0",
   "description": "Online implementation of Say Anything",
   "main": "./build/main",
+  "nodemonConfig": { 
+    "exec": "npm run dev",
+    "watch": ["src/*"],
+    "ignore": ["**/__tests__/**", "*.test.js", "*.spec.js"]
+  },
   "scripts": {
     "start": "node run prod",
     "server": "node ./build/main",
     "clean": "rimraf build",
     "transpile": "babel src -d build",
     "build": "npm-run-all clean transpile",
+    "watch:dev": "nodemon",
     "dev": "NODE_ENV=development npm-run-all build server",
     "prod": "NODE_ENV=production npm-run-all build server",
     "test": "echo \"Error: no test specified\" && exit 1"

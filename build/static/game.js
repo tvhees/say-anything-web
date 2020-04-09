@@ -9,7 +9,7 @@ var messages = {
   player: {
     join: 'new player',
     leave: 'disconnect',
-    setName: 'set name',
+    setName: 'PLAYER_NAME',
     setAnswer: 'set answer'
   }
 };
