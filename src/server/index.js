@@ -1,30 +1,29 @@
-import messages from '../common/messages.js';
-import game from './statechart.js'
+import express from 'express';
+import http from 'http';
+import path from 'path';
+import socketIO from 'socket.io';
+import config from '../config.js';
+import useDevServer from './dev-server.js';
+import server from './server.js';
 
-function initialise (io) {
-  var state = {};
+// Configure app and start the server
+// Heroku requires the app to listen on a specific port
+// Fallback to local config when not running on Heroku
+const app = express();
+const httpServer = http.Server(app);
+const io = socketIO(httpServer);
+const port = process.env.PORT || config.port;
+app.set('port', port);
 
-  game.start().onChange(context => { state = context; });
-  
-  io.on(messages.io.connection, function(socket) {
-    socket.on(messages.player.join, function() {
-      
-    });
 
-    socket.on(messages.player.leave, function() {
-      
-    });
-
-    socket.on(messages.player.setName, function(data) {
-      game.send('PLAYER_NAME', { id: socket.id, name: data });
-    });
-  });
-
-  setInterval(function() {
-    io.sockets.emit(messages.io.state, state);
-  }, 1000/60);
+const devServerEnabled = true;
+if (devServerEnabled) {
+  useDevServer(app);
 }
 
-export default {
-  initialise
-};
+app.use(express.static(__dirname + './../../public'));
+app.use(express.static(__dirname + './../../build'));
+httpServer.listen(port, () => console.log('Starting server on port ' + port));
+
+// Run the actual game with access to socket.io
+server.initialise(io);
