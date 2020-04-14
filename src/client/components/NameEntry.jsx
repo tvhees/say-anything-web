@@ -14,7 +14,7 @@ class NameEntry extends Component {
   }
 
   handleSubmit(event) {
-    console.log("Name: " + this.state.value);
+    this.props.onSubmit(this.state.value);
     event.preventDefault();
   }
 
@@ -27,7 +27,7 @@ class NameEntry extends Component {
             Name:
             <input type="text" value={this.state.value} onChange={this.handleChange} />
           </label>
-          <input type="submit" value ="Submit" />
+          <input type="submit" value="Submit" disabled={!this.state.value} />
         </form>
       </div>
     );

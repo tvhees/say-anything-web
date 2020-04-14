@@ -6,23 +6,20 @@ function initialise (io) {
 
   game.start().onChange(context => { state = context; });
   
-  io.on(messages.io.connection, function(socket) {
-    socket.emit(messages.io.message, "User Connected");
-    socket.on(messages.player.join, function() {
-      io.sockets.emit(messages.io.message, "Player joined");
-    });
+  io.on(messages.server.clientConnect, function(socket) {
+    socket.emit(messages.server.message, "User Connected");
 
-    socket.on(messages.player.leave, function() {
-      
+    socket.on(messages.server.clientDisconnect, function() {
+      game.send(messages.player.leave, { id: socket.id })
     });
 
     socket.on(messages.player.setName, function(data) {
-      game.send('PLAYER_NAME', { id: socket.id, name: data });
+      game.send(messages.player.setName, { id: socket.id, name: data });
     });
   });
 
   setInterval(function() {
-    io.sockets.emit(messages.io.state, state);
+    io.sockets.emit(messages.game.state, state);
   }, 1000/60);
 }
 

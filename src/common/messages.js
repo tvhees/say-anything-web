@@ -1,13 +1,20 @@
 export default {
-  io: {
+  server: {
     message: 'message',
-    connection: 'connection',
-    state: 'state'
+    clientConnect: 'connect',
+    clientDisconnect: 'disconnect'
+  },
+  client: {
+    connect: 'connect',
+    disconnect: 'disconnect'
+  },
+  game: {
+    state: 'GAME_STATE'
   },
   player: {
-    join: 'new player',
-    leave: 'disconnect',
-    setName: 'set name',
-    setAnswer: 'set answer'
+    join: 'PLAYER_JOIN',
+    leave: 'PLAYER_LEAVE',
+    setName: 'PLAYER_NAME',
+    setAnswer: 'PLAYER_ANSWER'
   }
 };
