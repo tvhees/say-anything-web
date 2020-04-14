@@ -1,23 +1,21 @@
 var webpack = require("webpack");
 var path = require("path");
+const HtmlWebPackPlugin = require("html-webpack-plugin")
 
 var BUILD_DIR = path.resolve(__dirname, "./build");
-var APP_DIR = path.resolve(__dirname, "./src/client");
+var SOURCE_DIR = path.resolve(__dirname, "./src/client");
 
 const config = {
   entry: {
-    app: [APP_DIR + "/index.js"]
-  },
-  devServer: {
-    contentBase: path.join(__dirname, "build"),
-    port: 8080,
-    host: `localhost`,
+    main: [SOURCE_DIR + "/index.js"]
   },
   output: {
-    filename: "app.js",
+    filename: "[name].js",
     path: BUILD_DIR,
     publicPath: '/'
   },
+  target: 'web',
+  devtool: 'source-map',
   module: {
     rules: [
       {
@@ -35,18 +33,33 @@ const config = {
         ],
       },
       {
+       test: /\.(png|svg|jpg|gif)$/,
+       use: ['file-loader']
+      },
+      {
         test: /\.(jsx|js)?$/,
         exclude: /node_modules/,
         use: {
           loader: "babel-loader",
         },
       },
+      {
+        // Loads the javacript into html template provided.
+        // Entry point is set below in HtmlWebPackPlugin in Plugins 
+        test: /\.html$/,
+        use: [{loader: "html-loader"}]
+      }
     ],
   },
   resolve: {
     alias: {}
   },
-  plugins: [],
+  plugins: [
+    new HtmlWebPackPlugin({
+      template: "./src/client/html/index.html",
+      filename: "./index.html"
+    })
+  ],
 };
 
 module.exports = config;

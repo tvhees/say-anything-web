@@ -7,8 +7,9 @@ function initialise (io) {
   game.start().onChange(context => { state = context; });
   
   io.on(messages.io.connection, function(socket) {
+    socket.emit(messages.io.message, "User Connected");
     socket.on(messages.player.join, function() {
-      
+      io.sockets.emit(messages.io.message, "Player joined");
     });
 
     socket.on(messages.player.leave, function() {
