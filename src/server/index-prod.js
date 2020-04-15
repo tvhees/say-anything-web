@@ -3,7 +3,6 @@ import http from 'http';
 import socketIO from 'socket.io';
 import config from './config.js';
 import server from './server.js';
-import webpackConfig from '../../webpack.prod.config.js';
 
 // Configure app and start the server
 // Heroku requires the app to listen on a specific port
@@ -15,9 +14,7 @@ const port = process.env.PORT || config.port;
 
 app.set('port', port);
 
-console.log(webpackConfig.output.publicPath);
-
-app.use(express.static(webpackConfig.output.publicPath));
+app.use(express.static('build'));
 
 httpServer.listen(port, () => console.log('Starting server on port ' + port));
 
