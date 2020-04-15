@@ -7,11 +7,11 @@ var SOURCE_DIR = path.resolve(__dirname, "./src/client");
 
 const config = {
   entry: {
-    main: [SOURCE_DIR + "/index.js"]
+    main: ['./src/client/index.js']
   },
   output: {
     filename: "[name].js",
-    path: BUILD_DIR,
+    path: path.join(__dirname, 'build'),
     publicPath: '/'
   },
   target: 'web',
@@ -53,9 +53,6 @@ const config = {
         use: [{loader: "html-loader"}]
       }
     ],
-  },
-  resolve: {
-    alias: {}
   },
   plugins: [
     new HtmlWebPackPlugin({
