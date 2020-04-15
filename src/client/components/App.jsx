@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client';
-import messages from '../../common/messages.js';
+import messages from '../../common/messages';
 
-import NameEntry from './lobby/NameEntry.jsx';
-import PlayerList from './lobby/PlayerList';
+import NameEntry from './lobby/NameEntry';
+import LobbyRoom from './lobby/LobbyRoom'
+import GameRoom from './game/GameRoom';
 
 class App extends Component {
   constructor(props) {
@@ -42,6 +43,8 @@ class App extends Component {
     this.getPlayers = this.getPlayers.bind(this);
     this.setPlayerName = this.setPlayerName.bind(this);
     this.getPlayerName = this.getPlayerName.bind(this);
+    this.handleStartButton = this.handleStartButton.bind(this);
+    this.getQuestions = this.getQuestions.bind(this);
   }
 
   getPlayers () {
@@ -58,16 +61,42 @@ class App extends Component {
     return id && players && players[id] && players[id].name;
   }
 
+  handleStartButton () {
+    this.socket.emit(messages.game.start);
+  }
+
+  getQuestions () {
+    return this.state.game.questions || {
+      Q1: 'Default question 1',
+      Q2: 'Default question 2',
+      Q3: 'Default question 3',
+      Q4: 'Default question 4',
+    }
+  }
+
   render() {
     return (
       <div>
         <h1>Say Anything!</h1>
-        {!this.getPlayerName()
+        {
+          !this.getPlayerName()
           ? <NameEntry onSubmit={this.setPlayerName} />
-          : <PlayerList
-              players={this.getPlayers()}
-              hostId={this.state.game.hostId} 
-            />}
+          : !this.state.game.judgeId
+            ? <LobbyRoom 
+                isHost={this.state.id === this.state.game.hostId}
+                players={this.getPlayers()}
+                hostId={this.state.game.hostId}
+                handleStartButton={this.handleStartButton}
+                isReady={this.state.game.isReady}
+              />
+            : <GameRoom
+                localId={this.state.id}
+                players={this.getPlayers()}
+                hostId={this.state.game.hostId}
+                judgeId={this.state.game.judgeId}
+                questions={this.getQuestions()}
+              />
+          }
       </div>);
   }
 }

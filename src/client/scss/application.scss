@@ -3,3 +3,18 @@ body {
   color: #005CC5;
   text-align: center;
 }
+
+.player-list {
+  display: flex;
+}
+
+.player-card {
+  background: #FFFFFF;
+  font-family: Arial, Helvetica, sans-serif;
+  text-transform: uppercase;
+  font-weight: bold;
+  color: #000000;
+  min-width: 200px;
+  padding: 10px;
+  margin: 2%;
+}

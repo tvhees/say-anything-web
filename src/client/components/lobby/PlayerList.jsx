@@ -8,16 +8,16 @@ class PlayerList extends Component {
 
   render() {
     return (
-      <div>
+      <div className="player-list">
         {
           Object.entries(this.props.players)
-          .map(([id, player]) =>
-            <PlayerCard
-              key={id}
-              name={player.name}
-              isHost={id === this.props.hostId} 
-            />
-          )
+            .map(([id, player]) =>
+              <PlayerCard
+                key={id}
+                name={player.name}
+                isHost={id === this.props.hostId} 
+              />
+            )
         }
       </div>
     );

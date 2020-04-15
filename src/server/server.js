@@ -9,13 +9,17 @@ function initialise (io) {
   io.on(messages.server.clientConnect, function(socket) {
     socket.emit(messages.server.message, "User Connected");
 
-    socket.on(messages.server.clientDisconnect, function() {
+    socket.on(messages.server.clientDisconnect, () =>
       game.send(messages.player.leave, { id: socket.id })
-    });
+    );
 
-    socket.on(messages.player.setName, function(data) {
-      game.send(messages.player.setName, { id: socket.id, name: data });
-    });
+    socket.on(messages.player.setName, data =>
+      game.send(messages.player.setName, { id: socket.id, name: data })
+    );
+
+    socket.on(messages.game.start, () =>
+      game.send(messages.game.start, { id: socket.id })
+    )
   });
 
   setInterval(function() {

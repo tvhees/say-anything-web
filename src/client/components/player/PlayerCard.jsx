@@ -7,7 +7,7 @@ class PlayerCard extends Component {
 
   render() {
     return (
-      <div>
+      <div className="player-card">
         <p>{this.props.name}</p>
         {this.props.isHost && <p>(Host)</p>}
       </div>

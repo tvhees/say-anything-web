@@ -9,7 +9,8 @@ export default {
     disconnect: 'disconnect'
   },
   game: {
-    state: 'GAME_STATE'
+    state: 'GAME_STATE',
+    start: 'GAME_START'
   },
   player: {
     join: 'PLAYER_JOIN',
