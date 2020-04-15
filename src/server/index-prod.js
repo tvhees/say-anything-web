@@ -15,11 +15,9 @@ const port = process.env.PORT || config.port;
 
 app.set('port', port);
 
-app.use(express.static(webpackConfig.output.publicPath));
+console.log(webpackConfig.output.publicPath);
 
-app.get("*", (req, res) => {
-  res.sendFile(path.join(webpackConfig.output.publicPath, "index.html"));
-});
+app.use(express.static(webpackConfig.output.publicPath));
 
 httpServer.listen(port, () => console.log('Starting server on port ' + port));
 
