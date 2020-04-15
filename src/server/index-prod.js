@@ -13,8 +13,6 @@ const io = socketIO(httpServer);
 const port = process.env.PORT || config.port;
 app.set('port', port);
 
-app.use(express.static(__dirname + './../../public'));
-app.use(express.static(__dirname + './../../build'));
 httpServer.listen(port, () => console.log('Starting server on port ' + port));
 
 // Run the actual game with access to socket.io
