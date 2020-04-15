@@ -16,6 +16,9 @@ const config = {
   },
   target: 'web',
   devtool: 'source-map',
+  resolve: {
+    extensions: ['.js', '.jsx']
+  },
   module: {
     rules: [
       {

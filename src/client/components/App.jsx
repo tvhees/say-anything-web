@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import NameEntry from './NameEntry.jsx';
 import io from 'socket.io-client';
 import messages from '../../common/messages.js';
+
+import NameEntry from './lobby/NameEntry.jsx';
+import PlayerList from './lobby/PlayerList';
 
 class App extends Component {
   constructor(props) {
@@ -37,17 +39,22 @@ class App extends Component {
     });
 
     //Bind functions
+    this.getPlayers = this.getPlayers.bind(this);
     this.setPlayerName = this.setPlayerName.bind(this);
-    this.isPlayerNameSet = this.isPlayerNameSet.bind(this);
+    this.getPlayerName = this.getPlayerName.bind(this);
+  }
+
+  getPlayers () {
+    return this.state.game.players || {}
   }
 
   setPlayerName (value) {
     this.socket.emit(messages.player.setName, value);
   }
 
-  isPlayerNameSet () {
+  getPlayerName () {
     const id = this.state.id;
-    const players = this.state.game.players;
+    const players = this.getPlayers();
     return id && players && players[id] && players[id].name;
   }
 
@@ -55,7 +62,12 @@ class App extends Component {
     return (
       <div>
         <h1>Say Anything!</h1>
-        {!this.isPlayerNameSet() && <NameEntry onSubmit={this.setPlayerName} />}
+        {!this.getPlayerName()
+          ? <NameEntry onSubmit={this.setPlayerName} />
+          : <PlayerList
+              players={this.getPlayers()}
+              hostId={this.state.game.hostId} 
+            />}
       </div>);
   }
 }
