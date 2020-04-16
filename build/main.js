@@ -63,7 +63,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "b686079cb26735c01c86";
+/******/ 	var hotCurrentHash = "3214c7175797b5564ae4";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -3583,7 +3583,7 @@ module.exports = exports;
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, "body {\n  background: #ACCEEC;\n  color: black;\n  text-align: center;\n  font-family: Arial, Helvetica, sans-serif; }\n\n.player-list {\n  display: flex;\n  flex-wrap: wrap; }\n\n.player-card {\n  background: #FFFFFF;\n  text-transform: uppercase;\n  font-weight: bold;\n  color: #000000;\n  min-width: 200px;\n  padding: 10px;\n  margin: 2%; }\n\nlabel {\n  font-weight: bold; }\n\n[type=\"text\"] {\n  border: 1px solid transparent;\n  padding: 0.5em;\n  border-start-start-radius: 0;\n  border-end-start-radius: 0; }\n  [type=\"text\"]:focus, [type=\"text\"]:hover {\n    border: 1px solid blue; }\n\nbutton,\n[type=\"submit\"] {\n  background-color: blue;\n  color: white;\n  border: 1px solid transparent;\n  padding: 0.5em;\n  border-top-right-radius: 0;\n  border-bottom-right-radius: 0; }\n  button:not(:disabled):focus, button:not(:disabled):hover,\n  [type=\"submit\"]:not(:disabled):focus,\n  [type=\"submit\"]:not(:disabled):hover {\n    border: 1px solid white; }\n  button:disabled,\n  [type=\"submit\"]:disabled {\n    background-color: grey; }\n\n.question-list {\n  display: flex;\n  flex-direction: column;\n  max-width: 80%; }\n  .question-list > button {\n    margin: 0.5em; }\n", ""]);
+exports.push([module.i, "body {\n  background: #ACCEEC;\n  color: black;\n  text-align: center;\n  font-family: Arial, Helvetica, sans-serif; }\n\n.player-list {\n  display: flex;\n  flex-wrap: wrap; }\n\n.player-card {\n  background: #FFFFFF;\n  text-transform: uppercase;\n  font-weight: bold;\n  color: #000000;\n  min-width: 200px;\n  padding: 10px;\n  margin: 2%; }\n\nlabel {\n  font-weight: bold; }\n\n[type=\"text\"] {\n  border: 1px solid transparent;\n  padding: 0.5em;\n  border-start-start-radius: 0;\n  border-end-start-radius: 0; }\n  [type=\"text\"]:focus, [type=\"text\"]:hover {\n    border: 1px solid blue; }\n\nbutton,\n[type=\"submit\"] {\n  background-color: blue;\n  color: white;\n  border: 1px solid transparent;\n  padding: 0.5em;\n  border-top-right-radius: 0;\n  border-bottom-right-radius: 0; }\n  button:not(:disabled):focus, button:not(:disabled):hover,\n  [type=\"submit\"]:not(:disabled):focus,\n  [type=\"submit\"]:not(:disabled):hover {\n    border: 1px solid white; }\n  button:disabled,\n  [type=\"submit\"]:disabled {\n    background-color: grey; }\n\n.question-list {\n  display: flex;\n  flex-direction: column;\n  max-width: 80%;\n  margin: auto; }\n  .question-list > button {\n    margin: 0.5em; }\n", ""]);
 // Exports
 module.exports = exports;
 
