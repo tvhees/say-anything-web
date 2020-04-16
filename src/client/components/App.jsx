@@ -45,6 +45,7 @@ class App extends Component {
     this.getPlayerName = this.getPlayerName.bind(this);
     this.handleStartButton = this.handleStartButton.bind(this);
     this.getQuestions = this.getQuestions.bind(this);
+    this.handleJudgeSelectQuestion = this.handleJudgeSelectQuestion.bind(this);
   }
 
   getPlayers () {
@@ -74,6 +75,10 @@ class App extends Component {
     }
   }
 
+  handleJudgeSelectQuestion(value) {
+    this.socket.emit(messages.player.setQuestion, value)
+  }
+
   render() {
     return (
       <div>
@@ -92,9 +97,10 @@ class App extends Component {
             : <GameRoom
                 localId={this.state.id}
                 players={this.getPlayers()}
-                hostId={this.state.game.hostId}
+                round={this.state.game.round}
                 judgeId={this.state.game.judgeId}
                 questions={this.getQuestions()}
+                onSelectQuestion={this.handleJudgeSelectQuestion}
               />
           }
       </div>);

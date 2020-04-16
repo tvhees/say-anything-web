@@ -1,20 +1,75 @@
 body {
   background: #ACCEEC;
-  color: #005CC5;
+  color: black;
   text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .player-list {
   display: flex;
+  flex-wrap: wrap;
 }
 
 .player-card {
   background: #FFFFFF;
-  font-family: Arial, Helvetica, sans-serif;
   text-transform: uppercase;
   font-weight: bold;
   color: #000000;
   min-width: 200px;
   padding: 10px;
   margin: 2%;
+}
+
+$activeColor: blue;
+$disabledColor: grey;
+$padding: 0.5em;
+$borderRadius: 0;
+
+label {
+  font-weight: bold;
+}
+
+[type="text"] {
+  border: 1px solid transparent;
+  padding: $padding;
+  border-start-start-radius: $borderRadius;
+  border-end-start-radius: $borderRadius;
+
+  &:focus,
+  &:hover {
+    border: 1px solid $activeColor;
+  }
+}
+
+button,
+[type="submit"] {
+  background-color: blue;
+  color: white;
+
+  border: 1px solid transparent;
+  padding: $padding;
+  border-top-right-radius: $borderRadius;
+  border-bottom-right-radius: $borderRadius;
+  
+    &:not(:disabled) {
+      &:focus,
+      &:hover {
+        border: 1px solid white;
+      }
+    }
+
+    &:disabled {
+      background-color: grey;
+    }
+}
+
+.question-list {
+  display: flex;
+  flex-direction: column;
+  max-width: 80%;
+  margin: auto;
+
+  > button {
+    margin: 0.5em;
+  }
 }

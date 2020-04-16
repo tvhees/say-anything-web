@@ -20,6 +20,10 @@ function initialise (io) {
     socket.on(messages.game.start, () =>
       game.send(messages.game.start, { id: socket.id })
     )
+
+    socket.on(messages.player.setQuestion, data =>
+      game.send(messages.player.setQuestion, { id: socket.id, questionId: data })
+    )
   });
 
   setInterval(function() {

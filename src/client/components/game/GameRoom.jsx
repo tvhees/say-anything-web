@@ -9,7 +9,9 @@ class GameRoom extends Component {
   render() {
     return (
       <div>
+        <h2>Round: {this.props.round}</h2>
         <QuestionList
+          onSubmit={this.props.onSelectQuestion}
           questions={this.props.questions}
         />
       </div>

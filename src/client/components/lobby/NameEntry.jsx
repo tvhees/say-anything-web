@@ -21,10 +21,10 @@ class NameEntry extends Component {
   render() {
     return (
       <div>
-        <h1>Enter your name:</h1>
-        <form onSubmit={this.handleSubmit}>
+        <h1>Welcome to the lobby</h1>
+        <form onSubmit={this.handleSubmit} className="pill-text-input">
           <label>
-            Name:
+            Name:&nbsp;
             <input type="text" value={this.state.value} onChange={this.handleChange} />
           </label>
           <input type="submit" value="Submit" disabled={!this.state.value} />

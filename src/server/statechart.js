@@ -1,7 +1,8 @@
 import { Machine, assign, interpret } from "xstate";
 import { countKeys, removeKey } from '../common/utilities';
+import { minPlayers } from '../common/rules';
 
-const isEnoughPlayers = ({ players }) => countKeys(players) >= 4;
+const isEnoughPlayers = ({ players }) => countKeys(players) >= minPlayers;
 
 const setHostId = assign({
   hostId: ({ players, hostId }, { id }) => countKeys(players) ? hostId : id
@@ -70,11 +71,23 @@ const lobbyStates = {
   },
 };
 
-const setJudge = assign({
+const setInitialGameState = assign({
+  round: 0,
+  judgeId: false,
+  questions: {},
+  question: false,
+  answers: {}
+});
+
+const incrementRound = assign({
+  round: ({ round }) => round + 1
+});
+
+const setNextJudge = assign({
   judgeId: ({ players }) => Object.keys(players)[0]
 });
 
-const setQuestionSelection = assign({
+const setNextQuestionSelection = assign({
   questions: {
     c1q1: 'What\'s the best video game of all time?',
     c1q2: 'What\'s the best excuse for forgetting your anniversary?',
@@ -82,22 +95,67 @@ const setQuestionSelection = assign({
     c1q4: 'What would be the worst thing to scream during church?',
     c1q5: 'There\'s no crying in ________!',
   }
-})
+});
+
+const setNextQuestion = assign({
+  question: ({ questions }, { questionId }) => questions[questionId]
+});
+
+const setPlayerAnswer = assign({
+  answers: ({ answers }, { id, answer }) => ({
+    ...answers,
+    [id]: answer
+  })
+});
+
+const isEnoughAnswers = ({ players, answers }) => countKeys(players) === countKeys(answers) + 1;
 
 const gameStates = {
-  initial: 'judge pick question',
-  context: {
-    judgeId: false,
-  },
+  initial: 'setup',
   states: {
-    "judge pick question": {
+    setup: {
+      on: {
+        "": "judge pick question"
+      },
       entry: [
-        setJudge, setQuestionSelection
+        setInitialGameState
       ]
     },
-    "write answers": {
-
+    "judge pick question": {
+      entry: [
+        incrementRound, setNextJudge, setNextQuestionSelection
+      ],
+      on: {
+        PLAYER_QUESTION: {
+          target: "write answers",
+          actions: [setNextQuestion]
+        }
+      }
     },
+    "write answers": {
+      initial: 'waiting',
+      states: {
+        waiting: {
+          on: {
+            PLAYER_ANSWER: {
+              target: "count answers",
+              actions: [setPlayerAnswer]
+            }
+          }
+        },
+        "count answers": {
+          on: {
+            "": [
+              { target: "#judge-answer", cond: isEnoughAnswers },
+              { target: "waiting" }
+            ],
+          },
+        }
+      }
+    },
+    "judge choose answer": {
+      id: 'judge-answer'
+    }
   },
 };
 
