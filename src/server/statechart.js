@@ -1,105 +1,134 @@
-import { Machine, interpret } from "xstate";
+import { Machine, interpret } from 'xstate';
 import { countKeys } from '../common/utilities';
 import { minPlayers } from '../common/rules';
+import messages from '../common/messages';
 import actions from './actions';
 
 const isEnoughPlayers = ({ players }) => countKeys(players) >= minPlayers;
 
 const lobbyStates = {
-  initial: "count players",
-  context: {
-    isReady: false
+  initial: 'waiting',
+  on: {
+    [messages.player.setName]: {
+      target: '.count players',
+      actions: [
+        actions.setHostId,
+        actions.addPlayer
+      ],
+    },
+    [messages.player.leave]: {
+      target: '.count players',
+      actions: [
+        actions.removePlayer
+      ],
+    },
   },
   states: {
-    "count players": {
+    'count players': {
       on: {
-        "": [
-          { target: "ready", cond: isEnoughPlayers },
-          { target: "waiting" }
+        '': [
+          { target: 'ready', cond: isEnoughPlayers },
+          { target: 'waiting' }
         ],
       },
     },
     waiting: {
-      entry: [actions.setLobbyIsReady(false)],
-      on: {
-        PLAYER_NAME: {
-          target: "count players",
-          actions: [
-            actions.setHostId,
-            actions.addPlayer
-          ],
-        },
-        PLAYER_LEAVE: {
-          target: "count players",
-          actions: [
-            actions.removePlayer
-          ],
-        },
-      },
     },
     ready: {
-      entry: [actions.setLobbyIsReady(true)],
       on: {
-        PLAYER_LEAVE: {
-          target: "count players",
-          actions: [
-            actions.removePlayer
-          ],
-        },
+        [messages.game.start]: 'closed'
       }
     },
+    closed: {
+      type: 'final'
+    }
   },
 };
 
 const isEnoughAnswers = ({ players, answers }) => countKeys(players) === countKeys(answers) + 1;
 
+//TODO Vote counting function
+const isEnoughVotes = ({ players, votes }) => false;
+
 const gameStates = {
-  initial: 'setup',
+  initial: 'judge pick question',
   states: {
-    setup: {
-      on: {
-        "": "judge pick question"
-      },
-      entry: [
-        actions.setInitialGameState
-      ]
-    },
-    "judge pick question": {
+    'judge pick question': {
       entry: [
         actions.incrementRound,
         actions.setNextJudge,
         actions.setNextQuestionSelection
       ],
       on: {
-        PLAYER_QUESTION: {
-          target: "write answers",
-          actions: [actions.setNextQuestion]
+        [messages.player.setQuestion]: {
+          target: 'write answers',
+          actions: [actions.setJudgeQuestion]
         }
       }
     },
-    "write answers": {
+    'write answers': {
       initial: 'waiting',
+      on: {
+        [messages.player.setAnswer]: {
+          target: '.count answers',
+          actions: [actions.setPlayerAnswer]
+        }
+      },
+      onDone: 'judge choose answer',
       states: {
-        waiting: {
+        'count answers': {
           on: {
-            PLAYER_ANSWER: {
-              target: "count answers",
-              actions: [actions.setPlayerAnswer]
-            }
-          }
-        },
-        "count answers": {
-          on: {
-            "": [
-              { target: "#judge-answer", cond: isEnoughAnswers },
-              { target: "waiting" }
+            '': [
+              { target: 'closed', cond: isEnoughAnswers },
+              { target: 'waiting' }
             ],
           },
+        },
+        waiting: {
+        },
+        closed: {
+          type: 'final'
+        },
+      },
+    },
+    'judge choose answer': {
+      on: {
+        [messages.player.chooseAnswer]: {
+          target: 'vote for answers',
+          actions: [actions.setJudgeAnswer]
         }
       }
     },
-    "judge choose answer": {
-      id: 'judge-answer'
+    'vote for answers': {
+      initial: 'waiting',
+      on: {
+        [messages.player.voteAnswer]: {
+          target: '.count votes',
+          actions: [actions.setPlayerVote]
+        }
+      },
+      onDone: 'score round',
+      states: {
+        'count votes': {
+          on: {
+            '': [
+              { target: 'closed', cond: isEnoughVotes },
+              { target: 'waiting' }
+            ],
+          },
+        },
+        waiting: {
+        },
+        closed: {
+          type: 'final'
+        },
+      }
+    },
+    'score round': {
+      entry: [actions.scoreRound]
+    },
+    'end game': {
+      type: 'final'
     }
   },
 };
@@ -112,12 +141,13 @@ const appMachineConfig = {
   },
   states: {
     lobby: {
-      on: {
-        GAME_START: 'game'
-      },
+      onDone: 'game',
       ...lobbyStates
     },
     game: {
+      entry: [
+        actions.setInitialGameState
+      ],
       ...gameStates
     }
   }

@@ -16,7 +16,9 @@ export default {
     join: 'PLAYER_JOIN',
     leave: 'PLAYER_LEAVE',
     setName: 'PLAYER_NAME',
-    setQuestion: 'PLAYER_QUESTION',
-    setAnswer: 'PLAYER_ANSWER'
+    setQuestion: 'JUDGE_QUESTION',
+    setAnswer: 'PLAYER_ANSWER',
+    chooseAnswer: 'JUDGE_ANSWER',
+    voteAnswer: 'PLAYER_VOTE'
   }
 };

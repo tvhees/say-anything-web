@@ -46,6 +46,7 @@ class App extends Component {
     this.handleStartButton = this.handleStartButton.bind(this);
     this.getQuestions = this.getQuestions.bind(this);
     this.handleJudgeSelectQuestion = this.handleJudgeSelectQuestion.bind(this);
+    this.isInState = this.isInState.bind(this);
   }
 
   getPlayers () {
@@ -67,42 +68,41 @@ class App extends Component {
   }
 
   getQuestions () {
-    return this.state.game.questions || {
-      Q1: 'Default question 1',
-      Q2: 'Default question 2',
-      Q3: 'Default question 3',
-      Q4: 'Default question 4',
-    }
+    return this.state.game.questions || {}
   }
 
   handleJudgeSelectQuestion(value) {
     this.socket.emit(messages.player.setQuestion, value)
   }
 
+  isInState(state) {
+    const currentStates = this.state.game.current;
+    return currentStates && currentStates.includes(state);
+  }
+
   render() {
     return (
       <div>
         <h1>Say Anything!</h1>
-        {
-          !this.getPlayerName()
-          ? <NameEntry onSubmit={this.setPlayerName} />
-          : !this.state.game.judgeId
-            ? <LobbyRoom 
-                isHost={this.state.id === this.state.game.hostId}
-                players={this.getPlayers()}
-                hostId={this.state.game.hostId}
-                handleStartButton={this.handleStartButton}
-                isReady={this.state.game.isReady}
-              />
-            : <GameRoom
-                localId={this.state.id}
-                players={this.getPlayers()}
-                round={this.state.game.round}
-                judgeId={this.state.game.judgeId}
-                questions={this.getQuestions()}
-                onSelectQuestion={this.handleJudgeSelectQuestion}
-              />
-          }
+        {!this.getPlayerName() && this.isInState('lobby') && 
+          <NameEntry onSubmit={this.setPlayerName} />}
+        {this.getPlayerName() && this.isInState('lobby') &&
+          <LobbyRoom 
+            isHost={this.state.id === this.state.game.hostId}
+            players={this.getPlayers()}
+            hostId={this.state.game.hostId}
+            handleStartButton={this.handleStartButton}
+            isReady={this.isInState('lobby.ready')}
+          />}
+        {this.isInState('game') &&
+          <GameRoom
+            localId={this.state.id}
+            players={this.getPlayers()}
+            round={this.state.game.round}
+            judgeId={this.state.game.judgeId}
+            questions={this.getQuestions()}
+            onSelectQuestion={this.handleJudgeSelectQuestion}
+          />}
       </div>);
   }
 }

@@ -18,10 +18,6 @@ const removePlayer = assign({
   players: ({ players }, { id }) => removeKey(players, id)
 });
 
-const setLobbyIsReady = (value) => assign({
-  isReady: value
-});
-
 const setInitialGameState = assign({
   round: 0,
   judgeId: false,
@@ -48,7 +44,7 @@ const setNextQuestionSelection = assign({
   }
 });
 
-const setNextQuestion = assign({
+const setJudgeQuestion = assign({
   question: ({ questions }, { questionId }) => questions[questionId]
 });
 
@@ -59,15 +55,26 @@ const setPlayerAnswer = assign({
   })
 });
 
+//TODO Update state with judge's choice
+const setJudgeAnswer = assign();
+
+//TODO Update state with player's vote
+const setPlayerVote = assign();
+
+//TODO calculate score and update state with score history
+const scoreRound = assign();
+
 export default {
   setHostId,
   addPlayer,
   removePlayer,
-  setLobbyIsReady,
   setInitialGameState,
   incrementRound,
   setNextJudge,
   setNextQuestionSelection,
-  setNextQuestion,
-  setPlayerAnswer
+  setJudgeQuestion,
+  setPlayerAnswer,
+  setJudgeAnswer,
+  setPlayerVote,
+  scoreRound
 }

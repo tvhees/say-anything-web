@@ -4,7 +4,7 @@ import game from './statechart.js'
 function initialise (io) {
   var state = {};
 
-  game.start().onChange(context => { state = context; });
+  game.start().onChange(context => { state = {...context, current: game.state.toStrings()}; });
   
   io.on(messages.server.clientConnect, function(socket) {
     socket.emit(messages.server.message, "User Connected");
@@ -19,11 +19,15 @@ function initialise (io) {
 
     socket.on(messages.game.start, () =>
       game.send(messages.game.start, { id: socket.id })
-    )
+    );
 
     socket.on(messages.player.setQuestion, data =>
       game.send(messages.player.setQuestion, { id: socket.id, questionId: data })
-    )
+    );
+
+    socket.on(messages.player.sertAnswer, data =>
+      game.send(messages.player.setAnswer, { id: id, answer: data})
+    );
   });
 
   setInterval(function() {
